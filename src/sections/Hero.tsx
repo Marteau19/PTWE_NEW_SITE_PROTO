@@ -85,8 +85,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.24 }}
           >
-            An invisible, energy-free septic system — and one partner who handles
-            every step, so you never think about it again.
+            One partner who handles every step, so you never think about it again.
           </motion.p>
 
           <motion.div
