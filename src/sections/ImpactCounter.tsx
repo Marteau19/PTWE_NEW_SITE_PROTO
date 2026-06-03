@@ -6,9 +6,9 @@ import { RevealGroup, RevealItem } from '../components/Reveal'
 import { servicePointCount } from '../data/servicePoints'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
-// Aerial view of a pristine lake surrounded by dense boreal forest — Quebec / Eastern Canada.
+// Aerial view of a river winding through dense evergreen forest — pure, fresh, natural water.
 const WATER_IMG =
-  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2400&q=80'
+  'https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=2400&q=80'
 
 interface Stat {
   end: number
@@ -78,8 +78,8 @@ export default function ImpactCounter() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a3a2e] to-eco-navy" />
       )}
 
-      {/* Deep navy overlay so text stays legible while water breathes through */}
-      <div className="absolute inset-0 bg-eco-navy/78" />
+      {/* Navy overlay so text stays legible while the water reads clearly through */}
+      <div className="absolute inset-0 bg-eco-navy/65" />
 
       {/* Subtle top-to-bottom gradient to deepen the base */}
       <div className="absolute inset-0 bg-gradient-to-b from-eco-navy/30 via-transparent to-eco-navy/50" />
