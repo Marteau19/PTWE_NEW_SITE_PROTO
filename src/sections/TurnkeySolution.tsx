@@ -1,72 +1,113 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
 import Logo from '../components/Logo'
 import Reveal from '../components/Reveal'
 import { fragmentedRoles } from '../data/content'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { scrollToId } from '../lib/scroll'
 
-// Scattered start positions (in px) for each contractor chip around the center.
-const scatter = [
-  { x: -150, y: -120, r: -12 },
-  { x: 160, y: -150, r: 10 },
-  { x: -200, y: 30, r: 8 },
-  { x: 190, y: 60, r: -9 },
-  { x: -120, y: 150, r: 14 },
-  { x: 120, y: 170, r: -7 },
-  { x: -30, y: -190, r: -5 },
-  { x: 40, y: 210, r: 11 },
-]
+// Each chip's angle (degrees) in the circle layout, evenly distributed.
+const CHIP_ANGLES = fragmentedRoles.map((_, i) => (360 / fragmentedRoles.length) * i - 90)
+// Radius of the chip orbit, in px (desktop). We scale down on mobile via state.
+const ORBIT_R = 195
 
-function Chip({
-  label,
-  start,
-  progress,
+interface ChipItem {
+  label: string
+  angle: number // degrees
+}
+
+function getXY(angle: number, r: number) {
+  const rad = (angle * Math.PI) / 180
+  return { x: Math.cos(rad) * r, y: Math.sin(rad) * r }
+}
+
+// A single chip + its connector line, both animating in with a stagger.
+function ChipNode({
+  item,
+  index,
+  orbit,
+  inView,
   reduced,
 }: {
-  label: string
-  start: { x: number; y: number; r: number }
-  progress: MotionValue<number>
+  item: ChipItem
+  index: number
+  orbit: number
+  inView: boolean
   reduced: boolean
 }) {
-  // Converge toward center and fade out as the user scrolls through.
-  const x = useTransform(progress, [0, 0.65], [start.x, 0])
-  const y = useTransform(progress, [0, 0.65], [start.y, 0])
-  const rotate = useTransform(progress, [0, 0.65], [start.r, 0])
-  const opacity = useTransform(progress, [0.2, 0.62], [1, 0])
-  const scale = useTransform(progress, [0.2, 0.65], [1, 0.4])
+  const { x, y } = getXY(item.angle, orbit)
+  // Line endpoint (stops just before the chip centre)
+  const lx2 = (x / orbit) * (orbit - 32)
+  const ly2 = (y / orbit) * (orbit - 32)
 
-  if (reduced) {
-    return (
-      <span className="rounded-full border border-eco-navy/10 bg-white px-3 py-1.5 text-xs font-medium text-eco-body shadow-eco-soft">
-        {label}
-      </span>
-    )
-  }
+  const delay = reduced ? 0 : index * 0.07 + 0.1
 
   return (
-    <motion.div
-      style={{ x, y, rotate, opacity, scale }}
-      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-eco-navy/10 bg-white px-4 py-2 text-sm font-medium text-eco-body shadow-eco-card"
+    <motion.g
+      initial={reduced ? false : { opacity: 0 }}
+      animate={inView ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: 0.5, delay }}
     >
-      {label}
-    </motion.div>
+      {/* Connector line */}
+      <motion.line
+        x1={0}
+        y1={0}
+        x2={lx2}
+        y2={ly2}
+        stroke="#64A70B"
+        strokeWidth={1.2}
+        strokeDasharray="4 3"
+        opacity={0.5}
+        initial={reduced ? false : { pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 0.5 } : { pathLength: 0, opacity: 0 }}
+        transition={{ duration: 0.55, delay: delay + 0.1, ease: 'easeOut' }}
+      />
+      {/* Chip foreignObject */}
+      <foreignObject
+        x={x - 68}
+        y={y - 18}
+        width={136}
+        height={36}
+        style={{ overflow: 'visible' }}
+      >
+        <div
+          className="flex h-9 w-34 items-center justify-center whitespace-nowrap rounded-full border border-eco-navy/10 bg-white px-4 text-[13px] font-medium text-eco-body shadow-eco-card"
+          style={{ fontSize: 13 }}
+        >
+          {item.label}
+        </div>
+      </foreignObject>
+    </motion.g>
   )
 }
 
 export default function TurnkeySolution() {
   const ref = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start 0.8', 'end 0.55'],
-  })
+  // Trigger once the diagram is properly in view — no scroll-progress timing.
+  const inView = useInView(ref, { once: true, margin: '-120px' })
+  const [orbit, setOrbit] = useState(ORBIT_R)
 
-  // Central Ecoflo mark grows in as the chips collapse.
-  const markScale = useTransform(scrollYProgress, [0.45, 0.85], [0.6, 1])
-  const markOpacity = useTransform(scrollYProgress, [0.45, 0.8], [0, 1])
-  const ringScale = useTransform(scrollYProgress, [0.5, 1], [0.8, 1.15])
-  const ringOpacity = useTransform(scrollYProgress, [0.5, 0.85, 1], [0, 0.5, 0.2])
+  // Shrink orbit radius on narrow screens so chips don't clip.
+  useEffect(() => {
+    const measure = () => {
+      const w = window.innerWidth
+      if (w < 480) setOrbit(130)
+      else if (w < 700) setOrbit(160)
+      else setOrbit(ORBIT_R)
+    }
+    measure()
+    window.addEventListener('resize', measure, { passive: true })
+    return () => window.removeEventListener('resize', measure)
+  }, [])
+
+  const chips: ChipItem[] = fragmentedRoles.map((label, i) => ({
+    label,
+    angle: CHIP_ANGLES[i],
+  }))
+
+  // SVG canvas size based on orbit.
+  const SIZE = (orbit + 90) * 2
 
   return (
     <section id="turnkey" className="bg-white py-24 sm:py-32">
@@ -84,63 +125,71 @@ export default function TurnkeySolution() {
           </p>
         </Reveal>
 
-        {/* The converging animation */}
-        <div ref={ref} className="relative mx-auto mt-16 h-[380px] max-w-3xl sm:h-[440px]">
-          {reduced ? (
-            <div className="flex h-full flex-col items-center justify-center gap-8">
-              <div className="flex flex-wrap justify-center gap-2">
-                {fragmentedRoles.map((r) => (
-                  <Chip key={r} label={r} start={scatter[0]} progress={scrollYProgress} reduced />
-                ))}
-              </div>
-              <span className="text-2xl text-eco-navy/30">↓</span>
-              <div className="flex h-28 w-28 items-center justify-center rounded-full bg-eco-green-tint">
-                <Logo className="h-7" />
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* Pulsing ring behind the mark */}
-              <motion.div
-                style={{ scale: ringScale, opacity: ringOpacity }}
-                className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-eco-green sm:h-52 sm:w-52"
+        {/* The hub-and-spoke diagram */}
+        <div
+          ref={ref}
+          className="relative mx-auto mt-10 flex items-center justify-center"
+          style={{ width: SIZE, maxWidth: '100%', height: SIZE, maxHeight: SIZE }}
+          aria-label="All roles connected to Ecoflo as one team"
+        >
+          <svg
+            viewBox={`${-SIZE / 2} ${-SIZE / 2} ${SIZE} ${SIZE}`}
+            width={SIZE}
+            height={SIZE}
+            className="absolute inset-0"
+            overflow="visible"
+            aria-hidden
+          >
+            {/* Outer orbit guide ring */}
+            <motion.circle
+              cx={0}
+              cy={0}
+              r={orbit}
+              fill="none"
+              stroke="#64A70B"
+              strokeWidth={1}
+              strokeDasharray="6 5"
+              opacity={0.18}
+              initial={reduced ? false : { pathLength: 0, opacity: 0 }}
+              animate={inView ? { pathLength: 1, opacity: 0.18 } : { pathLength: 0, opacity: 0 }}
+              transition={{ duration: 1.1, ease: 'easeOut' }}
+            />
+
+            {chips.map((chip, i) => (
+              <ChipNode
+                key={chip.label}
+                item={chip}
+                index={i}
+                orbit={orbit}
+                inView={inView}
+                reduced={reduced}
               />
-              {/* Chips */}
-              {fragmentedRoles.map((role, i) => (
-                <Chip
-                  key={role}
-                  label={role}
-                  start={scatter[i % scatter.length]}
-                  progress={scrollYProgress}
-                  reduced={false}
-                />
-              ))}
-              {/* Central Ecoflo mark */}
-              <motion.div
-                style={{ scale: markScale, opacity: markOpacity }}
-                className="absolute left-1/2 top-1/2 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-eco-card ring-1 ring-eco-green/20 sm:h-40 sm:w-40"
-              >
-                <Logo className="h-8 sm:h-9" />
-              </motion.div>
-            </>
-          )}
+            ))}
+          </svg>
+
+          {/* Central Ecoflo mark — animates in last */}
+          <motion.div
+            className="relative z-10 flex h-28 w-28 items-center justify-center rounded-full bg-white shadow-eco-card ring-2 ring-eco-green/20 sm:h-36 sm:w-36"
+            initial={reduced ? false : { scale: 0.7, opacity: 0 }}
+            animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.7, opacity: 0 }}
+            transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Logo className="h-9 sm:h-11" />
+          </motion.div>
         </div>
 
         {/* The resolution */}
-        <Reveal className="mx-auto mt-14 max-w-2xl text-center" delay={0.05}>
+        <Reveal className="mx-auto mt-6 max-w-2xl text-center" delay={0.05}>
           <span className="eco-eyebrow">The Ecoflo way</span>
           <h2 className="eco-h2 mt-4">
             One partner. <span className="text-eco-green">Every step.</span>
           </h2>
           <p className="eco-lead mt-5">
-            Ecoflo manages the entire lifecycle of your system — from the first
-            soil test to lifetime maintenance. You make one call. We handle the
-            rest, so you can simply live your life.
+            Every role in that list is covered by Ecoflo — one accountable team,
+            from the first soil test to lifetime maintenance. You make one call.
+            We handle the rest.
           </p>
-          <button
-            onClick={() => scrollToId('journey')}
-            className="eco-btn-outline mt-8"
-          >
+          <button onClick={() => scrollToId('journey')} className="eco-btn-outline mt-8">
             See the four steps →
           </button>
         </Reveal>
