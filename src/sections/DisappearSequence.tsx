@@ -212,13 +212,13 @@ export default function DisappearSequence() {
           </motion.div>
         )}
 
-        {/* Payoff */}
+        {/* Payoff — occupies the same slot as the intro label, swapping in on scroll */}
         <motion.div
-          className="absolute inset-x-0 bottom-[8%] z-40 px-6 text-center"
+          className="absolute inset-x-0 top-[14%] z-40 px-6 text-center"
           style={reduced ? { opacity: 1 } : { opacity: payoffOpacity, y: payoffY }}
         >
           <div className="mx-auto mb-4 flex items-center justify-center">
-            <Logo className="h-7 opacity-90" />
+            <Logo className="h-6 opacity-90 sm:h-7" />
           </div>
           <p
             className="mx-auto max-w-3xl font-extrabold leading-[1.05] tracking-tightest text-eco-navy"
