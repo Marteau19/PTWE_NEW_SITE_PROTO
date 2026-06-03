@@ -163,23 +163,23 @@ export default function DisappearSequence() {
 
         {/* ── Permanent landscape props, anchored to the ground line (58%) ── */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-[16] h-[58%]">
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between px-[5%] sm:px-[8%] lg:px-[11%]">
-            {/* Left cluster: big tree + pool */}
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between px-[3%] sm:px-[8%] lg:px-[11%]">
+            {/* Left cluster: big tree (+ pool on larger screens) */}
             <div className="flex items-end gap-3 sm:gap-6">
-              <Tree className="h-[150px] w-[112px] sm:h-[210px] sm:w-[158px]" />
-              <AboveGroundPool className="h-[80px] w-[130px] sm:h-[110px] sm:w-[180px]" />
+              <Tree className="h-[96px] w-[72px] sm:h-[210px] sm:w-[158px]" />
+              <AboveGroundPool className="hidden sm:block sm:h-[110px] sm:w-[180px]" />
             </div>
-            {/* Right cluster: small tree + house */}
+            {/* Right cluster: house (+ small tree on larger screens) */}
             <div className="flex items-end gap-3 sm:gap-6">
-              <Tree className="h-[110px] w-[82px] sm:h-[150px] sm:w-[112px]" />
-              <House className="h-[150px] w-[160px] sm:h-[205px] sm:w-[218px]" />
+              <Tree className="hidden sm:block sm:h-[150px] sm:w-[112px]" />
+              <House className="h-[100px] w-[107px] sm:h-[205px] sm:w-[218px]" />
             </div>
           </div>
         </div>
 
         {/* Ecoflo unit (descends from sky into the soil cutaway) */}
         <motion.div
-          className="absolute left-1/2 top-[58%] z-10 h-[170px] w-[155px] -translate-x-1/2"
+          className="absolute left-1/2 top-[58%] z-10 h-[120px] w-[108px] -translate-x-1/2 sm:h-[170px] sm:w-[155px]"
           style={reduced ? { y: 70 } : { y: unitY }}
         >
           <EcofloUnit />
