@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white font-sans text-eco-body antialiased;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-sans text-eco-navy;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: rgba(100, 167, 11, 0.22);
+    color: #041e42;
+  }
+}
+
+@layer components {
+  /* Section horizontal rhythm */
+  .eco-container {
+    @apply mx-auto w-full max-w-content px-6 sm:px-8 lg:px-10;
+  }
+
+  /* Large confident display type, Tesla-style */
+  .eco-display {
+    @apply font-extrabold leading-[0.98] tracking-tightest text-eco-navy;
+    font-size: clamp(2.5rem, 6vw, 5.25rem);
+  }
+
+  .eco-h2 {
+    @apply font-bold leading-[1.04] tracking-tightest text-eco-navy;
+    font-size: clamp(2rem, 4.4vw, 3.5rem);
+  }
+
+  .eco-lead {
+    @apply text-eco-body;
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    line-height: 1.7;
+  }
+
+  .eco-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-eco-green;
+  }
+
+  /* Buttons */
+  .eco-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold
+      transition-all duration-300 ease-eco-out focus:outline-none focus-visible:ring-2
+      focus-visible:ring-eco-green focus-visible:ring-offset-2;
+  }
+  .eco-btn-primary {
+    @apply eco-btn bg-eco-green text-white shadow-eco-soft hover:bg-eco-green-dark hover:-translate-y-0.5;
+  }
+  .eco-btn-ghost {
+    @apply eco-btn border border-white/40 bg-white/5 text-white backdrop-blur hover:bg-white/15;
+  }
+  .eco-btn-dark {
+    @apply eco-btn bg-eco-navy text-white hover:-translate-y-0.5 hover:bg-[#08294f];
+  }
+  .eco-btn-outline {
+    @apply eco-btn border border-eco-navy/15 bg-white text-eco-navy hover:border-eco-green hover:text-eco-green;
+  }
+}
+
+/* Respect reduced motion globally as a safety net */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Leaflet container theming */
+.leaflet-container {
+  background: #eef2f4;
+  font-family: inherit;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 14px;
+  box-shadow: 0 12px 40px -12px rgba(4, 30, 66, 0.35);
+  padding: 2px;
+}
+.leaflet-popup-content {
+  margin: 14px 16px;
+}
+.leaflet-popup-tip {
+  box-shadow: none;
+}
+.eco-marker {
+  background: transparent;
+  border: none;
+}
