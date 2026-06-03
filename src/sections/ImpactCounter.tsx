@@ -6,9 +6,9 @@ import { RevealGroup, RevealItem } from '../components/Reveal'
 import { servicePointCount } from '../data/servicePoints'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
-// Crystal-clear mountain water — pure, fresh, nature.
+// Aerial view of a pristine lake surrounded by dense boreal forest — Quebec / Eastern Canada.
 const WATER_IMG =
-  'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=2400&q=80'
+  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2400&q=80'
 
 interface Stat {
   end: number
