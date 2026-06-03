@@ -105,7 +105,7 @@ export default function ServiceMap() {
       <Reveal className="mt-12" delay={0.1}>
         <div
           ref={wrapRef}
-          className="relative mx-auto h-[520px] w-full max-w-[1320px] overflow-hidden rounded-none px-0 sm:h-[600px] sm:rounded-3xl sm:px-0 lg:mx-6 lg:w-auto"
+          className="relative mx-auto h-[520px] w-full max-w-[1320px] overflow-hidden rounded-none sm:h-[600px] sm:rounded-3xl"
         >
           <MapContainer
             center={regionViews['North America'].center}

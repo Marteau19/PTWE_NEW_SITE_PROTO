@@ -7,7 +7,7 @@ const features = [
   'See your system status at a glance',
   'Track litres treated, month over month',
   'Maintenance scheduled automatically',
-  'One tap to reach your Service Point',
+  'One click to reach your Service Point',
 ]
 
 const timeline = [
@@ -16,7 +16,7 @@ const timeline = [
   { label: 'Active care', done: true, current: true },
 ]
 
-function PhoneScreen() {
+function PortalScreen() {
   const reduced = usePrefersReducedMotion()
   return (
     <div className="flex h-full flex-col bg-gradient-to-b from-[#f7faf2] to-white px-4 pb-5 pt-3 text-left">
@@ -33,7 +33,7 @@ function PhoneScreen() {
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="text-[11px] text-eco-body/60">Good morning</p>
-          <p className="text-base font-bold text-eco-navy">Your Ecoflo</p>
+          <p className="text-base font-bold text-eco-navy">Your Ecoflo Portal</p>
         </div>
         <Logo className="h-4" />
       </div>
@@ -99,21 +99,22 @@ function PhoneScreen() {
 export default function AppTeaser() {
   const reduced = usePrefersReducedMotion()
   return (
-    <section className="overflow-hidden bg-white py-24 sm:py-32">
+    <section id="portal" className="overflow-hidden bg-white py-24 sm:py-32">
       <div className="eco-container">
         <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-12">
           {/* Copy */}
           <div className="order-2 lg:order-1">
             <Reveal>
-              <span className="eco-eyebrow">The Ecoflo app</span>
+              <span className="eco-eyebrow">The Ecoflo Portal</span>
               <h2 className="eco-h2 mt-4">
                 Everything you need,
                 <br />
-                in your pocket.
+                in one place.
               </h2>
               <p className="eco-lead mt-5 max-w-md">
-                Your whole system — tracked, transparent, and in one place. No phone
-                tag, no chasing paperwork. Just open the app and see that all is well.
+                Your whole system — tracked, transparent, and accessible anywhere.
+                No phone tag, no chasing paperwork. Log in and see that all is well,
+                from any device.
               </p>
             </Reveal>
 
@@ -127,9 +128,29 @@ export default function AppTeaser() {
                 </RevealItem>
               ))}
             </RevealGroup>
+
+            {/* Portal login CTA */}
+            <Reveal className="mt-10" delay={0.1}>
+              <a
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className="eco-btn-primary inline-flex items-center gap-2.5 px-7 py-3.5 text-sm"
+                aria-label="Log in to the Ecoflo Portal (mock)"
+              >
+                {/* Lock icon */}
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                Log in to your portal
+              </a>
+              <p className="mt-3 text-xs text-eco-body/50">
+                Already an Ecoflo customer? Access your dashboard here.
+              </p>
+            </Reveal>
           </div>
 
-          {/* iPhone mockup */}
+          {/* Phone mockup */}
           <div className="order-1 flex justify-center lg:order-2">
             <motion.div
               initial={reduced ? false : { opacity: 0, y: 40 }}
@@ -145,7 +166,7 @@ export default function AppTeaser() {
                 <div className="relative h-full w-full overflow-hidden rounded-[38px] bg-white">
                   {/* notch */}
                   <div className="absolute left-1/2 top-0 z-10 h-6 w-32 -translate-x-1/2 rounded-b-2xl bg-[#0c1726]" />
-                  <PhoneScreen />
+                  <PortalScreen />
                 </div>
               </div>
             </motion.div>
