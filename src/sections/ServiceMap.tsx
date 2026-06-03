@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -123,7 +123,7 @@ export default function ServiceMap() {
             <FlyController view={view} reduced={reduced} />
 
             {servicePoints.map((p) => (
-              <div key={p.id}>
+              <Fragment key={p.id}>
                 <Circle
                   center={[p.lat, p.lng]}
                   radius={p.coverageRadiusKm * 1000 * radiusProgress}
@@ -148,7 +148,7 @@ export default function ServiceMap() {
                     </div>
                   </Popup>
                 </Marker>
-              </div>
+              </Fragment>
             ))}
           </MapContainer>
 
