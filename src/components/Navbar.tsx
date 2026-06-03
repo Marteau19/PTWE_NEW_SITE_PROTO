@@ -38,7 +38,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop links */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
           {navLinks.map((link) => (
             <button
               key={link.targetId}
@@ -50,6 +50,23 @@ export default function Navbar() {
               {link.label}
             </button>
           ))}
+
+          {/* Portal login — subtle text link */}
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); go('portal') }}
+            className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors duration-300 ${
+              scrolled ? 'text-eco-navy/70 hover:text-eco-green' : 'text-white/75 hover:text-white'
+            }`}
+            aria-label="Log in to portal"
+          >
+            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0110 0v4" />
+            </svg>
+            Log in
+          </a>
+
           <button onClick={() => go('cta')} className="eco-btn-primary">
             Get started
           </button>
@@ -102,6 +119,17 @@ export default function Navbar() {
                   {link.label}
                 </button>
               ))}
+              {/* Mobile portal login */}
+              <button
+                onClick={() => go('portal')}
+                className="flex items-center gap-2 rounded-xl px-3 py-3 text-left text-base font-medium text-eco-navy hover:bg-eco-green-tint"
+              >
+                <svg className="h-4 w-4 text-eco-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                Log in to your portal
+              </button>
               <button onClick={() => go('cta')} className="eco-btn-primary mt-3 w-full">
                 Get started
               </button>
