@@ -48,6 +48,62 @@ function GrassRow() {
   )
 }
 
+/** Simple house: walls + gabled roof + door + two windows. */
+function House() {
+  return (
+    <svg viewBox="0 0 160 140" className="h-full w-full" aria-hidden>
+      {/* Walls */}
+      <rect x="14" y="62" width="132" height="78" rx="2" fill="#f0ebe2" />
+      {/* Roof */}
+      <polygon points="0,66 80,6 160,66" fill="#c0876a" />
+      <polygon points="0,66 80,6 160,66" fill="url(#roofShade)" />
+      {/* Door */}
+      <rect x="62" y="100" width="36" height="40" rx="3" fill="#8b6f47" />
+      <circle cx="93" cy="122" r="2.5" fill="#c8a96e" />
+      {/* Windows */}
+      <rect x="20" y="76" width="32" height="28" rx="3" fill="#a8d4e6" stroke="#c0b49a" strokeWidth="1.5" />
+      <rect x="108" y="76" width="32" height="28" rx="3" fill="#a8d4e6" stroke="#c0b49a" strokeWidth="1.5" />
+      {/* Window crosses */}
+      <line x1="36" y1="76" x2="36" y2="104" stroke="#c0b49a" strokeWidth="1.2" />
+      <line x1="20" y1="90" x2="52" y2="90" stroke="#c0b49a" strokeWidth="1.2" />
+      <line x1="124" y1="76" x2="124" y2="104" stroke="#c0b49a" strokeWidth="1.2" />
+      <line x1="108" y1="90" x2="140" y2="90" stroke="#c0b49a" strokeWidth="1.2" />
+      {/* Chimney */}
+      <rect x="104" y="18" width="18" height="32" rx="2" fill="#b07860" />
+      <defs>
+        <linearGradient id="roofShade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#ffffff" stopOpacity="0.12" />
+          <stop offset="1" stopColor="#000000" stopOpacity="0.18" />
+        </linearGradient>
+      </defs>
+    </svg>
+  )
+}
+
+/** Above-ground round pool: deck + water + ladder. */
+function AboveGroundPool() {
+  return (
+    <svg viewBox="0 0 120 72" className="h-full w-full" aria-hidden>
+      {/* Pool wall (cylinder exterior) */}
+      <ellipse cx="60" cy="62" rx="56" ry="10" fill="#b8c8d4" />
+      <rect x="4" y="18" width="112" height="44" fill="#cad8e0" />
+      {/* Water surface */}
+      <ellipse cx="60" cy="18" rx="56" ry="14" fill="#4ab3d8" />
+      {/* Water ripple highlights */}
+      <ellipse cx="60" cy="18" rx="40" ry="8" fill="#63c4e8" opacity="0.5" />
+      <ellipse cx="60" cy="18" rx="22" ry="4" fill="#88d6f2" opacity="0.4" />
+      {/* Pool wall top ring */}
+      <ellipse cx="60" cy="18" rx="56" ry="14" fill="none" stroke="#9ab8c8" strokeWidth="3" />
+      {/* Ladder */}
+      <rect x="92" y="4" width="4" height="38" rx="2" fill="#d4a060" />
+      <rect x="100" y="4" width="4" height="38" rx="2" fill="#d4a060" />
+      <rect x="92" y="12" width="12" height="3" rx="1" fill="#d4a060" />
+      <rect x="92" y="22" width="12" height="3" rx="1" fill="#d4a060" />
+      <rect x="92" y="32" width="12" height="3" rx="1" fill="#d4a060" />
+    </svg>
+  )
+}
+
 export default function DisappearSequence() {
   const ref = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
@@ -87,13 +143,12 @@ export default function DisappearSequence() {
 
         {/* Underground soil (cutaway) */}
         <div className="absolute inset-x-0 bottom-0 top-[52%] bg-gradient-to-b from-[#8a6a47] via-[#6f5436] to-[#4f3c26]">
-          {/* soil strata lines */}
           <div className="absolute inset-x-0 top-[18%] h-px bg-black/10" />
           <div className="absolute inset-x-0 top-[42%] h-px bg-black/10" />
           <div className="absolute inset-x-0 top-[70%] h-px bg-black/10" />
         </div>
 
-        {/* The Ecoflo unit (sits in front of soil-back, behind the cover) */}
+        {/* Ecoflo unit */}
         <motion.div
           className="absolute left-1/2 top-[52%] z-10 h-[210px] w-[190px] -translate-x-1/2"
           style={reduced ? { y: 60 } : { y: unitY }}
@@ -101,7 +156,7 @@ export default function DisappearSequence() {
           <EcofloUnit />
         </motion.div>
 
-        {/* Topsoil + grass cover that grows down to bury the unit */}
+        {/* Topsoil + grass cover */}
         <motion.div
           className="absolute inset-x-0 top-[52%] z-20 origin-top"
           style={reduced ? { scaleY: 1, height: '48%' } : { scaleY: coverScale, height: '48%' }}
@@ -109,7 +164,7 @@ export default function DisappearSequence() {
           <div className="h-full w-full bg-gradient-to-b from-[#5a8f12] via-[#6f5436] to-[#4f3c26]" />
         </motion.div>
 
-        {/* Surface grass strip */}
+        {/* Grass strip */}
         <motion.div
           className="absolute inset-x-0 top-[50%] z-30 h-[36px] origin-bottom"
           style={reduced ? { scaleY: 1, opacity: 1 } : { scaleY: grassScale, opacity: grassOpacity }}
@@ -117,9 +172,10 @@ export default function DisappearSequence() {
           <GrassRow />
         </motion.div>
 
-        {/* Scenery that returns on top — a calm tree + sun */}
+        {/* ── Surface scenery (fades in once grass is grown) ── */}
+        {/* Tree — left side */}
         <motion.div
-          className="absolute left-[12%] top-[24%] z-30"
+          className="absolute left-[6%] top-[16%] z-30 sm:left-[10%]"
           style={reduced ? { opacity: 1 } : { opacity: sceneryOpacity }}
         >
           <svg viewBox="0 0 120 160" className="h-32 w-24 sm:h-44 sm:w-32" aria-hidden>
@@ -129,10 +185,52 @@ export default function DisappearSequence() {
             <circle cx="84" cy="76" r="24" fill="#5a8f12" />
           </svg>
         </motion.div>
+
+        {/* Sun — top right */}
         <motion.div
-          className="absolute right-[14%] top-[16%] z-30 h-16 w-16 rounded-full bg-[#ffe7a0] blur-[2px] sm:h-20 sm:w-20"
+          className="absolute right-[10%] top-[10%] z-30 h-14 w-14 rounded-full bg-[#ffe7a0] blur-[2px] sm:h-20 sm:w-20"
           style={reduced ? { opacity: 1 } : { opacity: sceneryOpacity }}
         />
+
+        {/* House — right of center */}
+        <motion.div
+          className="absolute z-30"
+          style={
+            reduced
+              ? { opacity: 1, bottom: '48%', right: '8%', width: 160, transform: 'translateY(100%)' }
+              : { opacity: sceneryOpacity, bottom: '48%', right: '8%', width: 160, transform: 'translateY(100%)' }
+          }
+        >
+          <House />
+        </motion.div>
+
+        {/* Above-ground pool — left of center, sitting on the grass */}
+        <motion.div
+          className="absolute z-30"
+          style={
+            reduced
+              ? { opacity: 1, bottom: '48%', left: '18%', width: 110, transform: 'translateY(62%)' }
+              : { opacity: sceneryOpacity, bottom: '48%', left: '18%', width: 110, transform: 'translateY(62%)' }
+          }
+        >
+          <AboveGroundPool />
+        </motion.div>
+
+        {/* Small tree right of pool for depth */}
+        <motion.div
+          className="absolute z-30"
+          style={
+            reduced
+              ? { opacity: 1, bottom: '48%', left: '33%', transform: 'translateY(100%)' }
+              : { opacity: sceneryOpacity, bottom: '48%', left: '33%', transform: 'translateY(100%)' }
+          }
+        >
+          <svg viewBox="0 0 72 100" className="h-20 w-14" aria-hidden>
+            <rect x="32" y="58" width="8" height="36" rx="3" fill="#6f5436" />
+            <circle cx="36" cy="38" r="28" fill="#64A70B" />
+            <circle cx="22" cy="50" r="16" fill="#7cc41a" />
+          </svg>
+        </motion.div>
 
         {/* Intro label */}
         {!reduced && (
@@ -147,7 +245,7 @@ export default function DisappearSequence() {
 
         {/* Payoff */}
         <motion.div
-          className="absolute inset-x-0 bottom-[10%] z-40 px-6 text-center"
+          className="absolute inset-x-0 bottom-[8%] z-40 px-6 text-center"
           style={reduced ? { opacity: 1 } : { opacity: payoffOpacity, y: payoffY }}
         >
           <div className="mx-auto mb-4 flex items-center justify-center">
