@@ -51,6 +51,20 @@ export default function Navbar() {
             </button>
           ))}
 
+          {/* Phone number */}
+          <a
+            href="tel:+18006326356"
+            className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors duration-300 ${
+              scrolled ? 'text-eco-navy/70 hover:text-eco-green' : 'text-white/75 hover:text-white'
+            }`}
+            aria-label="Call Ecoflo at 1 800 632-6356"
+          >
+            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.4 1.14 2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+            </svg>
+            1 800 632-6356
+          </a>
+
           {/* Portal login — subtle text link */}
           <a
             href="#"
@@ -119,6 +133,17 @@ export default function Navbar() {
                   {link.label}
                 </button>
               ))}
+              {/* Mobile phone */}
+              <a
+                href="tel:+18006326356"
+                className="flex items-center gap-2 rounded-xl px-3 py-3 text-left text-base font-medium text-eco-navy hover:bg-eco-green-tint"
+                aria-label="Call Ecoflo at 1 800 632-6356"
+              >
+                <svg className="h-4 w-4 text-eco-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.4 1.14 2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                </svg>
+                1 800 632-6356
+              </a>
               {/* Mobile portal login */}
               <button
                 onClick={() => go('portal')}
