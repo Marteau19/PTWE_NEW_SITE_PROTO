@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo'
 import Reveal, { RevealGroup, RevealItem } from '../components/Reveal'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
@@ -98,6 +99,7 @@ function PortalScreen() {
 
 export default function AppTeaser() {
   const reduced = usePrefersReducedMotion()
+  const navigate = useNavigate()
   return (
     <section id="portal" className="overflow-hidden bg-white py-24 sm:py-32">
       <div className="eco-container">
@@ -132,10 +134,10 @@ export default function AppTeaser() {
             {/* Portal login CTA */}
             <Reveal className="mt-10" delay={0.1}>
               <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
+                href="/login"
+                onClick={(e) => { e.preventDefault(); navigate('/login') }}
                 className="eco-btn-primary inline-flex items-center gap-2.5 px-7 py-3.5 text-sm"
-                aria-label="Log in to the Ecoflo Portal (mock)"
+                aria-label="Log in to the Ecoflo Portal"
               >
                 {/* Lock icon */}
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>

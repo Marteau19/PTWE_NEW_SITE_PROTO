@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import { navLinks } from '../data/content'
 import { scrollToId } from '../lib/scroll'
@@ -7,6 +8,7 @@ import { scrollToId } from '../lib/scroll'
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -67,8 +69,8 @@ export default function Navbar() {
 
           {/* Portal login — subtle text link */}
           <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); go('portal') }}
+            href="/login"
+            onClick={(e) => { e.preventDefault(); navigate('/login') }}
             className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors duration-300 ${
               scrolled ? 'text-eco-navy/70 hover:text-eco-green' : 'text-white/75 hover:text-white'
             }`}
@@ -146,7 +148,7 @@ export default function Navbar() {
               </a>
               {/* Mobile portal login */}
               <button
-                onClick={() => go('portal')}
+                onClick={() => { setMenuOpen(false); navigate('/login') }}
                 className="flex items-center gap-2 rounded-xl px-3 py-3 text-left text-base font-medium text-eco-navy hover:bg-eco-green-tint"
               >
                 <svg className="h-4 w-4 text-eco-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
