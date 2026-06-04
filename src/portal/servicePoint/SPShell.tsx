@@ -11,6 +11,8 @@ const fieldNav = [
 const mgmtNav = [
   { to: '/portal/sp/operations', label: 'Operations', icon: '📊', end: false },
   { to: '/portal/sp/accounts', label: 'Customer accounts', icon: '👥', end: false },
+  { to: '/portal/sp/marketing', label: 'Marketing material', icon: '📁', end: false },
+  { to: '/portal/sp/reviews', label: 'Reviews', icon: '⭐', end: false },
 ]
 
 export default function SPShell() {
@@ -18,7 +20,11 @@ export default function SPShell() {
   const reduced = usePrefersReducedMotion()
 
   // Which lens are we in? (drives the header label + switcher highlight)
-  const inMgmt = location.pathname.startsWith('/portal/sp/operations') || location.pathname.startsWith('/portal/sp/accounts')
+  const inMgmt =
+    location.pathname.startsWith('/portal/sp/operations') ||
+    location.pathname.startsWith('/portal/sp/accounts') ||
+    location.pathname.startsWith('/portal/sp/marketing') ||
+    location.pathname.startsWith('/portal/sp/reviews')
 
   return (
     <div className="min-h-[100svh] bg-[#f4f6f8] lg:flex">

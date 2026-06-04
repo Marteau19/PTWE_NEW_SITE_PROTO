@@ -16,6 +16,8 @@ import Schedule from './portal/servicePoint/Schedule'
 import WorkOrder from './portal/servicePoint/WorkOrder'
 import Operations from './portal/servicePoint/Operations'
 import Accounts from './portal/servicePoint/Accounts'
+import MarketingMaterial from './portal/servicePoint/MarketingMaterial'
+import Reviews from './portal/servicePoint/Reviews'
 
 export default function App() {
   return (
@@ -56,6 +58,8 @@ export default function App() {
               <Route path="operations" element={<Operations />} />
               <Route path="accounts" element={<Accounts />} />
               <Route path="accounts/:customerId" element={<Accounts />} />
+              <Route path="marketing" element={<MarketingMaterial />} />
+              <Route path="reviews" element={<Reviews />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

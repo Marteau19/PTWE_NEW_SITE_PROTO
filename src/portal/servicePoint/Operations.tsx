@@ -3,6 +3,7 @@ import { BarChart, Bar, ResponsiveContainer, Cell, XAxis, Tooltip } from 'rechar
 import { useAuth } from '../auth/AuthContext'
 import { usePortalStore } from '../store/PortalStore'
 import { leads, technicians, type LeadStage } from '../data/portalData'
+import { computeRatingStats } from '../../data/reviews'
 import { Card, FadeIn, StatTile, AnimatedNumber } from '../ui/ui'
 
 const STAGE_ORDER: LeadStage[] = ['new', 'qualified', 'quoted', 'won']
@@ -27,6 +28,7 @@ export default function Operations() {
   const wonValue = wonLeads.reduce((s, l) => s + l.value, 0)
   const conversion = spLeads.length ? Math.round((wonLeads.length / spLeads.length) * 100) : 0
   const monthlyRevenue = 184_000 + wonValue
+  const { average: avgRating, total: reviewTotal } = computeRatingStats(spId)
 
   const funnel = useMemo(
     () =>
@@ -54,11 +56,17 @@ export default function Operations() {
 
       {/* KPI cards */}
       <FadeIn delay={0.05}>
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
           <StatTile label="Revenue (mo.)" value={<>$<AnimatedNumber value={monthlyRevenue} /></>} sub="Service + installs" accent />
           <StatTile label="Active contracts" value={<AnimatedNumber value={spCustomers.length * 18 + 42} />} sub="Across territory" />
           <StatTile label="FMR completion" value={`${fmrRate}%`} sub={`${fmrDone}/${fmrJobs.length} this cycle`} />
           <StatTile label="Lead conversion" value={`${conversion}%`} sub={`${wonLeads.length}/${spLeads.length} leads won`} />
+          <StatTile
+            label="Avg. rating"
+            value={<><span className="text-amber-400">★</span> {avgRating.toFixed(1)}</>}
+            sub={`${reviewTotal} reviews`}
+            accent
+          />
         </div>
       </FadeIn>
 
