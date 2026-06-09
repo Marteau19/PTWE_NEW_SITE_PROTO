@@ -13,15 +13,27 @@ export default function TurnkeySolution() {
       <div className="eco-container">
         {/* The problem */}
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="eco-eyebrow">The old way</span>
-          <h2 className="eco-h2 mt-4">
-            A new septic system shouldn't mean juggling a dozen strangers.
+          <h2 className="eco-h2">
+            <span className="text-eco-green">Ecoflo is with you</span>
+            <br />
+            <span className="text-eco-green">every step of the way</span>
           </h2>
-          <p className="eco-lead mt-5">
-            Soil testers, designers, permits, excavators, installers, inspectors,
-            maintenance crews. Different numbers, different timelines, and every
-            gap between them becomes your problem.
-          </p>
+          <div className="eco-lead mt-6 space-y-4">
+            <p>
+              Septic systems can feel overwhelming. Terms are unfamiliar,
+              regulations are complex, and finding the right help often means
+              juggling multiple contractors and waiting for callbacks.
+            </p>
+            <p>It doesn't have to be that way.</p>
+            <p>
+              Ecoflo is Premier Tech Water and Environment's complete service
+              offer for homeowners. Our team handles everything, from your septic
+              installation to maintenance, inspections, tankering and repairs.
+            </p>
+            <p>
+              You never need to be a wastewater treatment expert — that's our job.
+            </p>
+          </div>
         </Reveal>
 
         {/* Service wheel — every service, one team */}
