@@ -22,9 +22,9 @@ const SEGMENTS: Segment[] = [
 ]
 
 const RO = 196 // outer radius
-const RI = 84 // inner radius (ring hole)
-const RC = 74 // centre hub radius
-const LABEL_R = 137 // radius at which labels are centred (pulled in to stay inside the band)
+const RI = 80 // inner radius (ring hole)
+const RC = 72 // centre hub radius
+const LABEL_R = 134 // radius at which labels are centred (pulled in to stay inside the band)
 const GAP = 2.2 // degrees of white gap between segments
 const ACCENT_W = 8 // thickness of the outer accent arc
 
@@ -92,7 +92,7 @@ export default function EcofloServiceWheel({
               textAnchor="middle"
               fill="#ffffff"
               style={{ fontWeight: 600 }}
-              fontSize={threeLine ? 11.5 : 12.5}
+              fontSize={threeLine ? 11 : 11.5}
             >
               {seg.lines.map((line, li) => (
                 <tspan key={li} x={lx} dy={li === 0 ? -(seg.lines.length - 1) * 8.5 : 17}>
