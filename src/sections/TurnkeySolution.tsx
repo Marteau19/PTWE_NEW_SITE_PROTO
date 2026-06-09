@@ -12,13 +12,11 @@ export default function TurnkeySolution() {
     <section id="turnkey" className="bg-white py-24 sm:py-32">
       <div className="eco-container">
         {/* The problem */}
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="eco-h2">
-            <span className="text-eco-green">Ecoflo is with you</span>
-            <br />
-            <span className="text-eco-green">every step of the way</span>
+        <Reveal className="mx-auto max-w-4xl text-center">
+          <h2 className="font-bold leading-[1.05] tracking-tightest text-eco-green" style={{ fontSize: 'clamp(1.75rem, 3.4vw, 2.75rem)' }}>
+            Ecoflo is with you every step of the way
           </h2>
-          <div className="eco-lead mt-6 space-y-4">
+          <div className="mx-auto mt-5 max-w-3xl space-y-2.5 text-eco-body" style={{ fontSize: 'clamp(0.95rem, 1.15vw, 1.125rem)', lineHeight: 1.55 }}>
             <p>
               Septic systems can feel overwhelming. Terms are unfamiliar,
               regulations are complex, and finding the right help often means
