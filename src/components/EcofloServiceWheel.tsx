@@ -2,32 +2,36 @@ import { motion } from 'framer-motion'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 // Six services arranged around the Ecoflo hub, recreating the brand wheel.
-// Mid-angles use math convention (90° = up). Right-hand segments carry the
-// green accent arc, left-hand the blue — matching the source artwork.
+// Mid-angles use math convention (90° = up). The outer accent ring reads
+// grey across the top, green down the right side, blue down the left — exactly
+// as the source artwork.
 interface Segment {
   lines: string[]
   a0: number
   a1: number
-  accent: 'green' | 'blue'
+  accent: 'green' | 'blue' | 'grey'
 }
 
 const SEGMENTS: Segment[] = [
-  { lines: ['Free site', 'assessment'], a0: 30, a1: 90, accent: 'green' },
-  { lines: ['Expert', 'advice'], a0: 90, a1: 150, accent: 'blue' },
+  { lines: ['Free site', 'assessment'], a0: 30, a1: 90, accent: 'grey' },
+  { lines: ['Expert', 'advice'], a0: 90, a1: 150, accent: 'grey' },
   { lines: ['Tankering', 'CCTV survey', 'Drain jetting'], a0: 150, a1: 210, accent: 'blue' },
   { lines: ['Service', 'Maintenance', 'Coco filter renewal'], a0: 210, a1: 270, accent: 'blue' },
   { lines: ['Septic', 'installation'], a0: 270, a1: 330, accent: 'green' },
   { lines: ['Soil testing', 'Drainage design'], a0: 330, a1: 390, accent: 'green' },
 ]
 
-const RO = 190 // outer radius
-const RI = 94 // inner radius (ring hole)
-const RC = 78 // centre hub radius
-const GAP = 1.6 // degrees of white gap between segments
+const RO = 196 // outer radius
+const RI = 84 // inner radius (ring hole)
+const RC = 74 // centre hub radius
+const GAP = 2.2 // degrees of white gap between segments
+const ACCENT_W = 8 // thickness of the outer accent arc
 
-const NAVY = '#041E42'
+const NAVY = '#0A1F44'
 const GREEN = '#64A70B'
 const BLUE = '#2BA8E0'
+const GREY = '#AEB6BD'
+const ACCENT: Record<Segment['accent'], string> = { green: GREEN, blue: BLUE, grey: GREY }
 
 function pt(r: number, deg: number): [number, number] {
   const a = (deg * Math.PI) / 180
@@ -54,8 +58,9 @@ export default function EcofloServiceWheel({
 
   return (
     <svg
-      viewBox="-210 -210 420 420"
+      viewBox="-224 -224 448 448"
       className={className}
+      style={{ overflow: 'visible' }}
       role="img"
       aria-label="Ecoflo services: free site assessment, expert advice, tankering, CCTV survey, drain jetting, service, maintenance, coco filter renewal, septic installation, soil testing and drainage design — all from one team."
     >
@@ -64,8 +69,8 @@ export default function EcofloServiceWheel({
         const a1 = seg.a1 - GAP
         const mid = (seg.a0 + seg.a1) / 2
         const [lx, ly] = pt((RI + RO) / 2, mid)
-        const accent = seg.accent === 'green' ? GREEN : BLUE
         const delay = reduced ? 0 : 0.12 + i * 0.08
+        const threeLine = seg.lines.length > 2
 
         return (
           <motion.g
@@ -77,8 +82,8 @@ export default function EcofloServiceWheel({
           >
             {/* Navy body */}
             <path d={ringPath(a0, a1, RI, RO)} fill={NAVY} />
-            {/* Accent outer arc */}
-            <path d={ringPath(a0, a1, RO - 9, RO)} fill={accent} />
+            {/* Outer accent arc */}
+            <path d={ringPath(a0, a1, RO - ACCENT_W, RO)} fill={ACCENT[seg.accent]} />
             {/* Label */}
             <text
               x={lx}
@@ -86,14 +91,10 @@ export default function EcofloServiceWheel({
               textAnchor="middle"
               fill="#ffffff"
               style={{ fontWeight: 600 }}
-              fontSize={seg.lines.length > 2 ? 13 : 14.5}
+              fontSize={threeLine ? 12.5 : 14}
             >
               {seg.lines.map((line, li) => (
-                <tspan
-                  key={li}
-                  x={lx}
-                  dy={li === 0 ? -(seg.lines.length - 1) * 8.5 : 17}
-                >
+                <tspan key={li} x={lx} dy={li === 0 ? -(seg.lines.length - 1) * 8.5 : 17}>
                   {line}
                 </tspan>
               ))}
@@ -109,7 +110,6 @@ export default function EcofloServiceWheel({
         transition={{ duration: 0.55, delay: reduced ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{ transformOrigin: '0px 0px' }}
       >
-        <circle cx={0} cy={0} r={RC + 6} fill="#ffffff" />
         <circle cx={0} cy={0} r={RC} fill={GREEN} />
         <text
           x={0}
@@ -117,7 +117,7 @@ export default function EcofloServiceWheel({
           textAnchor="middle"
           dominantBaseline="central"
           fill="#ffffff"
-          fontSize={29}
+          fontSize={28}
           style={{ fontWeight: 800, letterSpacing: '0.04em' }}
         >
           ECOFLO
